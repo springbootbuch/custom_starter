@@ -1,7 +1,6 @@
 package de.springbootbuch.custom_starter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -12,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -21,6 +21,7 @@ import org.springframework.core.env.Environment;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 @Configuration
+@EnableConfigurationProperties(ThymeleafBannerProperties.class)
 @ConditionalOnClass({SpringTemplateEngine.class, ThymeleafAutoConfiguration.class})
 @AutoConfigureAfter(CacheAutoConfiguration.class)
 @AutoConfigureBefore(ThymeleafAutoConfiguration.class)
@@ -59,9 +60,9 @@ class ThymeleafBannerAutoConfiguration {
     public BannerSupplier joshsBannerSupplier(
             ObjectMapper objectMapper, 
             CacheManager cacheManager, 
-            @Value("${thymeleaf-banner.cacheName}") String cacheName
+            ThymeleafBannerProperties bannerProperties
     ) {
-        return new JoshsBannerSupplier(objectMapper, cacheManager.getCache(cacheName));
+        return new JoshsBannerSupplier(objectMapper, cacheManager.getCache(bannerProperties.getCacheName()));
     }
 
     @Bean
