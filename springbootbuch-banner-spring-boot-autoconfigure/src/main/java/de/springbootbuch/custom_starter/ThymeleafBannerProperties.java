@@ -2,7 +2,7 @@ package de.springbootbuch.custom_starter;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "thymeleaf-banner")
+@ConfigurationProperties(prefix = "springbootbuch-banner")
 public class ThymeleafBannerProperties {
     /**
      * The name of the cache that should be used by

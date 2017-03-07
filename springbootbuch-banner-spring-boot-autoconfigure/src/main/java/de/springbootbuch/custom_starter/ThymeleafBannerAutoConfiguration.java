@@ -49,7 +49,7 @@ class ThymeleafBannerAutoConfiguration {
         static class OnCacheManagerAvailable {
         }             
 
-        @ConditionalOnProperty("thymeleaf-banner.cacheName")
+        @ConditionalOnProperty("springbootbuch-banner.cache-name")
         static class OnCacheNameSpecified {
         }
     }
