@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-  de.springbootbuch.custom_starter.ThymeleafBannerAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = de.springbootbuch.custom_starter.ThymeleafBannerAutoConfiguration
