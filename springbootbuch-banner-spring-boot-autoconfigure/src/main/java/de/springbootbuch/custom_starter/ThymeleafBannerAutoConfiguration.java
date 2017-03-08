@@ -21,66 +21,74 @@ import org.springframework.core.env.Environment;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 @Configuration
-@EnableConfigurationProperties(ThymeleafBannerProperties.class)
-@ConditionalOnClass({SpringTemplateEngine.class, ThymeleafAutoConfiguration.class})
+@ConditionalOnClass({
+	SpringTemplateEngine.class,
+	ThymeleafAutoConfiguration.class
+})
 @AutoConfigureAfter(CacheAutoConfiguration.class)
 @AutoConfigureBefore(ThymeleafAutoConfiguration.class)
+@EnableConfigurationProperties(ThymeleafBannerProperties.class)
 class ThymeleafBannerAutoConfiguration {
 
-    static class OnNoBannerButFun extends AllNestedConditions {
+	static class OnNoBannerButFun
+		extends AllNestedConditions {
 
-        public OnNoBannerButFun() {
-            // This controlls wether beans are added or not.
-            // If you would want to prevent configuration classes,
-            // use ConfigurationPhase.PARSE_CONFIGURATION
-            super(ConfigurationPhase.REGISTER_BEAN);
-        }
+		public OnNoBannerButFun() {
+			super(ConfigurationPhase.REGISTER_BEAN);
+		}
 
-        // See https://github.com/spring-projects/spring-boot/issues/2541
-        @ConditionalOnProperty(name = "spring.main.banner-mode", havingValue = "off")
-        static class OnBannerTurnedOff {
-        }
+		@ConditionalOnProperty(
+			name = "spring.main.banner-mode",
+			havingValue = "off"
+		)
+		static class OnBannerTurnedOff {}
 
-        @ConditionalOnClass(ObjectMapper.class)
-        static class OnObjectMapperAvailable {            
-        }
-        
-        @ConditionalOnBean(CacheManager.class)
-        static class OnCacheManagerAvailable {
-        }             
+		@ConditionalOnClass(ObjectMapper.class)
+		@ConditionalOnBean(ObjectMapper.class)
+		static class OnObjectMapperAvailable {}
 
-        @ConditionalOnProperty("springbootbuch-banner.cache-name")
-        static class OnCacheNameSpecified {
-        }
-    }
+		@ConditionalOnBean(CacheManager.class)
+		static class OnCacheManagerAvailable {}
 
-    @Bean
-    @ConditionalOnClass(ObjectMapper.class)    
-    @Conditional(OnNoBannerButFun.class)
-    public BannerSupplier joshsBannerSupplier(
-            ObjectMapper objectMapper, 
-            CacheManager cacheManager, 
-            ThymeleafBannerProperties bannerProperties
-    ) {
-        return new JoshsBannerSupplier(objectMapper, cacheManager.getCache(bannerProperties.getCacheName()));
-    }
+		@ConditionalOnProperty(
+			"springbootbuch-banner.cache-name")
+		static class OnCacheNameSpecified {}
+	}
 
-    @Bean
-    @ConditionalOnMissingBean(BannerSupplier.class)
-    @ConditionalOnProperty(name = "spring.main.banner-mode", havingValue = "off")
-    public BannerSupplier emptyBannerSupplier() {
-        return context -> context.getModelFactory().createModel();
-    }
+	@Bean
+	@Conditional(OnNoBannerButFun.class)
+	public BannerSupplier joshsBannerSupplier(
+		ObjectMapper objectMapper,
+		CacheManager cacheManager,
+		ThymeleafBannerProperties config
+	) {
+		return new JoshsBannerSupplier(
+			objectMapper,
+			cacheManager.getCache(config.getCacheName()));
+	}
 
-    @Bean
-    @ConditionalOnMissingBean(BannerSupplier.class)
-    @ConditionalOnBean(Banner.class)
-    public BannerSupplier defaultBannerSupplier(final Environment environment, final Banner banner) {
-        return new DefaultBannerSupplier(environment, banner);
-    }
+	@Bean
+	@ConditionalOnMissingBean(BannerSupplier.class)
+	@ConditionalOnProperty(
+		name = "spring.main.banner-mode",
+		havingValue = "off")
+	public BannerSupplier emptyBannerSupplier() {
+		return ctx -> ctx.getModelFactory().createModel();
+	}
 
-    @Bean
-    public ThymeleafBannerDialect webBannerDialect(final BannerSupplier bannerSupplier) {
-        return new ThymeleafBannerDialect(bannerSupplier);
-    }
+	@Bean
+	@ConditionalOnMissingBean(BannerSupplier.class)
+	@ConditionalOnBean(Banner.class)
+	public BannerSupplier defaultBannerSupplier(
+		final Environment environment,
+		final Banner banner
+	) {
+		return new DefaultBannerSupplier(
+			environment, banner);
+	}
+
+	@Bean
+	public ThymeleafBannerDialect webBannerDialect(final BannerSupplier bannerSupplier) {
+		return new ThymeleafBannerDialect(bannerSupplier);
+	}
 }
