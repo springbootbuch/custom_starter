@@ -43,16 +43,16 @@ class ThymeleafBannerAutoConfiguration {
 		)
 		static class OnBannerTurnedOff {}
 
+		@ConditionalOnProperty(
+			"springbootbuch-banner.cache-name")
+		static class OnCacheNameSpecified {}
+
 		@ConditionalOnClass(ObjectMapper.class)
 		@ConditionalOnBean(ObjectMapper.class)
 		static class OnObjectMapperAvailable {}
 
 		@ConditionalOnBean(CacheManager.class)
 		static class OnCacheManagerAvailable {}
-
-		@ConditionalOnProperty(
-			"springbootbuch-banner.cache-name")
-		static class OnCacheNameSpecified {}
 	}
 
 	@Bean
