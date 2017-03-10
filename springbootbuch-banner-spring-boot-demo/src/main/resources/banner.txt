@@ -5,4 +5,4 @@
  //__.....----~~~~._\ | /_.~~~~----.....__\\
 ====================\\|//====================
                     `---`
-Spring Boot Buch on ${spring-boot.version}.
+${AnsiColor.BRIGHT_YELLOW}Spring Boot Buch${AnsiColor.DEFAULT} on ${AnsiColor.BRIGHT_GREEN}${spring-boot.version}${AnsiColor.DEFAULT}.
