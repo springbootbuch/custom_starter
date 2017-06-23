@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>springbootbuch-banner-spring-boot-starter</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
