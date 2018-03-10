@@ -1,5 +1,5 @@
 $(function () {
-    $.get('/autoconfig').done(
+    $.get('/actuator/conditions').done(
 	    function (result) {
 		var addThymeleafBannerConditions = function (mark, values, foo) {
 		    var autoconfigView = $('.autoconfig tbody');
@@ -38,8 +38,8 @@ $(function () {
 		    }
 		};
 
-		addThymeleafBannerConditions('[x]', result.positiveMatches);
-		addThymeleafBannerConditions('[ ]', result.negativeMatches, true);
+		addThymeleafBannerConditions('[x]', result.contexts.application.positiveMatches);
+		addThymeleafBannerConditions('[ ]', result.contexts.application.negativeMatches, true);
 	    }
     );
 });
