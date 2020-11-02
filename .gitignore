@@ -6,3 +6,10 @@ var/
 /nbproject/
 Thumbs.db
 /demo/nbproject/
+
+
+### Eclipse ###
+.classpath
+.project
+.settings/
+.factorypath
