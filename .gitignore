@@ -13,3 +13,6 @@ Thumbs.db
 .project
 .settings/
 .factorypath
+
+.idea/
+*.iml
